@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // CORS
 app.use(cors({
-  origin: 'https://savorystories-server-mern.onrender.com', 
+  origin: 'https://savory-stories-manuel.vercel.app/', 
   credentials: true
 }));
 
