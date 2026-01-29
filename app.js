@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: [
-      "https://savory-stories-client-mern.vercel.app/",
+      "https://savory-stories-manuel.vercel.app",
       "http://localhost:3000",
     ],
     credentials: true,
