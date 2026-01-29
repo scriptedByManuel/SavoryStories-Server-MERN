@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Recipe from <%= name %></title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f5f5f5;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .header {
+        background: linear-gradient(135deg, #8b6f47 0%, #d4a574 100%);
+        color: white;
+        padding: 40px 20px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 28px;
+        margin-bottom: 10px;
+      }
+
+      .header p {
+        font-size: 14px;
+        opacity: 0.9;
+      }
+
+      .content {
+        padding: 40px 20px;
+      }
+
+      .recipe-card {
+        margin: 30px 0;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .recipe-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .recipe-details {
+        padding: 20px;
+      }
+
+      .recipe-title {
+        font-size: 24px;
+        color: #2c3e50;
+        margin-bottom: 10px;
+      }
+
+      .chef-info {
+        display: flex;
+        align-items: center;
+        margin: 15px 0;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .chef-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        margin-right: 12px;
+        object-fit: cover;
+      }
+
+      .chef-details h3 {
+        margin: 0;
+        font-size: 16px;
+        color: #2c3e50;
+      }
+
+      .chef-details p {
+        margin: 4px 0 0 0;
+        font-size: 13px;
+        color: #7f8c8d;
+      }
+
+      .recipe-excerpt {
+        color: #555;
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 15px 0;
+      }
+
+      .recipe-meta {
+        display: flex;
+        gap: 20px;
+        margin: 20px 0;
+        font-size: 13px;
+        color: #7f8c8d;
+      }
+
+      .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .cta-button {
+        display: inline-block;
+        background: linear-gradient(135deg, #8b6f47 0%, #d4a574 100%);
+        color: white;
+        padding: 12px 30px;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-top: 20px;
+        font-weight: 600;
+        transition: opacity 0.3s;
+      }
+
+      .cta-button:hover {
+        opacity: 0.9;
+      }
+
+      .footer {
+        background-color: #f9f9f9;
+        padding: 20px;
+        text-align: center;
+        font-size: 12px;
+        color: #999;
+        border-top: 1px solid #e0e0e0;
+      }
+
+      .footer p {
+        margin: 8px 0;
+      }
+
+      .unsubscribe {
+        color: #8b6f47;
+        text-decoration: none;
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          width: 100% !important;
+        }
+
+        .header {
+          padding: 30px 15px;
+        }
+
+        .header h1 {
+          font-size: 22px;
+        }
+
+        .content {
+          padding: 20px 15px;
+        }
+
+        .recipe-image {
+          height: 250px;
+        }
+
+        .recipe-meta {
+          flex-direction: column;
+          gap: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h1>🍳 New Recipe Alert!</h1>
+        <p>A delicious new recipe has just been shared</p>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <p style="margin-bottom: 20px; color: #555">Hello there,</p>
+
+        <!-- Recipe Card -->
+        <div class="recipe-card">
+          <img
+            src="<%= recipe.image %>"
+            alt="<%= recipe.title %>"
+            class="recipe-image"
+          />
+
+          <div class="recipe-details">
+            <h2 class="recipe-title"><%= recipe.title %></h2>
+
+            <!-- Chef Info -->
+            <div class="chef-info">
+              <img
+                src="<%= recipe.author.avatar %>"
+                alt="<%= name %>"
+                class="chef-avatar"
+              />
+              <div class="chef-details">
+                <h3><%= name %></h3>
+              </div>
+            </div>
+
+            <!-- Recipe Description -->
+            <p class="recipe-excerpt"><%= recipe.description %></p>
+
+            <!-- Recipe Metadata -->
+            <div class="recipe-meta">
+              <div class="meta-item">
+                ⏱️ <strong><%= recipe.cookingTime %></strong> mins
+              </div>
+              <div class="meta-item">
+                📊 <strong><%= recipe.difficulty %></strong>
+              </div>
+            </div>
+
+            <a href="<%= recipeUrl %>" class="cta-button">View Full Recipe</a>
+          </div>
+        </div>
+
+        <p style="margin-top: 30px; color: #7f8c8d; font-size: 14px">
+          Happy cooking! Don't forget to share your cooking results with us.
+        </p>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>
+          You're receiving this email because you subscribed to recipe updates.
+        </p>
+        <p>&copy; 2026 Recipe Blogger. All rights reserved.</p>
+      </div>
+    </div>
+  </body>
+</html>
