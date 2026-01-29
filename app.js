@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // CORS
 app.use(cors({
-  origin: 'https://savory-stories-manuel.vercel.app/', 
+  origin: 'https://savory-stories-manuel.vercel.app', 
   credentials: true
 }));
 
