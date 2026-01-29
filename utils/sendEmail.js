@@ -27,12 +27,9 @@ const sendEmail = async ({ viewFile, from, to, subject, data }) => {
       subject,
       html,
     });
-    console.log("Message sent:", info.messageId);
   } catch (error) {
     console.error("Mailtrap email error:", error);
   }
 };
-
-console.log(__dirname)
 
 module.exports = sendEmail;
