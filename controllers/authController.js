@@ -12,6 +12,8 @@ const authController = {
       const token = await createToken(user._id);
       res.cookie("jwt", token, {
         httpOnly: true,
+        secure: true,
+        sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
       res.status(201).json({ user, token });
@@ -26,6 +28,8 @@ const authController = {
       const token = await createToken(user._id);
       res.cookie("jwt", token, {
         httpOnly: true,
+        secure: true,
+        sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
       res.status(200).json({ user, token });
@@ -37,6 +41,8 @@ const authController = {
     try {
       res.cookie("jwt", "", {
         httpOnly: true,
+        secure: true,
+        sameSite: "none",
         maxAge: 1,
       });
 
