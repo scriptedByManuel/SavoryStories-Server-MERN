@@ -2,7 +2,8 @@ const Recipe = require("../models/Recipe");
 const Subscriber = require("../models/Subscriber");
 const emailQueue = require("../queues/emailQueue");
 const createPagination = require("../utils/createPagination");
-const deleteImage = require("../utils/deleteImage");
+const { deleteFile } = require("../utils/supabaseStorage");
+
 
 const recipesController = {
   getAllRecipes: async (req, res) => {
@@ -204,26 +205,11 @@ const recipesController = {
   deleteRecipe: async (req, res) => {
     try {
       const recipe = req.recipe;
-      // delete image from disk
       if (recipe.image) {
-        deleteImage(recipe.image);
+        await deleteFile("general", recipe.image);
       }
       await recipe.deleteOne();
       res.status(200).json({ message: "Recipe deleted" });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  },
-
-  uploadRecipeImage: async (req, res) => {
-    try {
-      const recipe = req.recipe;
-      if (recipe.image) {
-        deleteImage(recipe.image);
-      }
-      recipe.image = `recipes/${req.file.filename}`;
-      await recipe.save();
-      res.status(200).json({ data: recipe });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }

@@ -2,7 +2,7 @@ const Blog = require("../models/Blog");
 const Subscriber = require("../models/Subscriber");
 const emailQueue = require("../queues/emailQueue");
 const createPagination = require("../utils/createPagination");
-const deleteImage = require("../utils/deleteImage");
+const { deleteFile } = require("../utils/supabaseStorage");
 
 const blogsController = {
   getAllBlogs: async (req, res) => {
@@ -57,7 +57,7 @@ const blogsController = {
         sort,
         search,
         blogs,
-        req
+        req,
       );
 
       res.status(200).json({
@@ -117,7 +117,7 @@ const blogsController = {
         sort,
         search,
         blogs,
-        req
+        req,
       );
 
       res.status(200).json({
@@ -136,7 +136,7 @@ const blogsController = {
 
       const blog = await Blog.findOne({ slug }).populate(
         "author",
-        "name avatar bio"
+        "name avatar bio",
       );
       if (!blog) {
         return res.status(404).json({ message: "Blog not found" });
@@ -156,7 +156,7 @@ const blogsController = {
         excerpt,
         category,
         author: req.user._id,
-      })
+      });
 
       const subscribers = await Subscriber.find({});
       const subscriberEmails = subscribers.map((sub) => sub.email);
@@ -195,26 +195,11 @@ const blogsController = {
   deleteBlog: async (req, res) => {
     try {
       const blog = req.blog;
-      // delete image from disk
       if (blog.featuredImage) {
-        deleteImage(blog.featuredImage);
+        await deleteFile("general", blog.featuredImage);
       }
       await blog.deleteOne();
       res.status(200).json({ message: "Blog deleted" });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  },
-
-  uploadBlogImage: async (req, res) => {
-    try {
-      const blog = req.blog;
-      if (blog.featuredImage) {
-        deleteImage(blog.featuredImage);
-      }
-      blog.featuredImage = `blogs/${req.file.filename}`;
-      await blog.save();
-      res.status(200).json({ data: blog });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }

@@ -3,12 +3,10 @@ const { body } = require("express-validator");
 const handleErrorMessage = require("../middlewares/handleErrorMessage");
 const {
   getProfileInfo,
-  updateNameAndBio,
+  updateProfile,
   updatePassword,
-  updateAvatar,
   deleteAccount,
 } = require("../controllers/profileController");
-const { uploadAvatar } = require("../middlewares/uploadMiddleware");
 
 const router = express.Router();
 
@@ -19,9 +17,10 @@ router.patch(
   [
     body("name").notEmpty().withMessage("Name is required"),
     body("bio").notEmpty().withMessage("Bio is required"),
+    body("avatar").notEmpty().withMessage("Avatar is required"),
   ],
   handleErrorMessage,
-  updateNameAndBio,
+  updateProfile,
 );
 router.patch(
   "/password",
@@ -33,21 +32,6 @@ router.patch(
   ],
   handleErrorMessage,
   updatePassword,
-);
-router.post(
-  "/avatar",
-  uploadAvatar.single("avatar"),
-  body("avatar").custom((value, { req }) => {
-    if (!req.file) {
-      throw new Error("Avatar is required");
-    }
-    if (!req.file.mimetype.startsWith("image/")) {
-      throw new Error("File must be an image");
-    }
-    return true;
-  }),
-  handleErrorMessage,
-  updateAvatar,
 );
 
 module.exports = router;

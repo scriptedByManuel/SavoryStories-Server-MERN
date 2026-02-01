@@ -1,8 +1,8 @@
-const express = require("express")
-const { getChefById } = require("../controllers/chefController")
+const express = require("express");
+const { getChefById } = require("../controllers/chefController");
 
-const router = express.Router()
+const router = express.Router();
 
-router.get("/:id", getChefById)
+router.get("/:id", getChefById);
 
-module.exports = router
+module.exports = router;

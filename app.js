@@ -8,6 +8,7 @@ const blogsRoute = require("./routes/blogsRoute");
 const profileRoute = require("./routes/profileRoute");
 const subscribeRoute = require("./routes/subscribeRoute");
 const chefRoute = require("./routes/chefRoute");
+const uploadRoute = require("./routes/uploadRoute");
 const cookieParser = require("cookie-parser");
 const authMiddleware = require("./middlewares/authMiddleware");
 
@@ -31,8 +32,6 @@ app.use(
     credentials: true,
   }),
 );
-
-app.use("/uploads", express.static("uploads"));
 
 // Cookie parser
 app.use(cookieParser());
@@ -65,5 +64,8 @@ app.use("/api/subscribe", subscribeRoute);
 
 // Chef Route
 app.use("/api/chef", chefRoute);
+
+// Upload Route
+app.use("/api/upload", uploadRoute);
 
 module.exports = app;

@@ -5,6 +5,7 @@ const blogValidation = [
   body("category").notEmpty().withMessage("Category is required"),
   body("excerpt").notEmpty().withMessage("Excerpt is required"),
   body("content").notEmpty().withMessage("Content is required"),
+  body("featuredImage").notEmpty().withMessage("FeaturedImage is required"),
 ];
 
 module.exports = blogValidation;

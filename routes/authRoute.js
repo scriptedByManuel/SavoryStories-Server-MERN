@@ -27,7 +27,7 @@ router.post(
     body("password").notEmpty().withMessage("Password is required"),
   ],
   handleErrorMessage,
-  register
+  register,
 );
 
 router.post(
@@ -37,7 +37,7 @@ router.post(
     body("password").notEmpty().withMessage("Password is required"),
   ],
   handleErrorMessage,
-  login
+  login,
 );
 
 router.get("/logout", logout);

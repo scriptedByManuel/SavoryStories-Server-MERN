@@ -7,9 +7,15 @@ const router = express.Router();
 
 router.post(
   "",
-  [body("email").notEmpty().withMessage("Email is required").isEmail().withMessage("Invalid email")],
+  [
+    body("email")
+      .notEmpty()
+      .withMessage("Email is required")
+      .isEmail()
+      .withMessage("Invalid email"),
+  ],
   handleErrorMessage,
-  subscribe
+  subscribe,
 );
 
 module.exports = router;

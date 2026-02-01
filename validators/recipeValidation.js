@@ -28,6 +28,7 @@ const recipeValidation = [
     .withMessage("Difficulty must be easy, medium, or hard"),
 
   body("category").notEmpty().withMessage("Category is required"),
+  body("image").notEmpty().withMessage("Image is required"),
 ];
 
 module.exports = recipeValidation;

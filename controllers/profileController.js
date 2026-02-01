@@ -2,7 +2,7 @@ const Chef = require("../models/Chef");
 const Recipe = require("../models/Recipe");
 const Blog = require("../models/Blog");
 const bcrypt = require("bcrypt");
-const deleteImage = require("../utils/deleteImage");
+const { deleteFile } = require("../utils/supabaseStorage");
 
 const profileController = {
   updatePassword: async (req, res) => {
@@ -34,37 +34,30 @@ const profileController = {
     }
   },
 
-  updateNameAndBio: async (req, res) => {
+  updateProfile: async (req, res) => {
     try {
       const chefId = req.user._id;
-      const { name, bio } = req.body;
+      const chef = req.user;
+      const { name, bio, avatar } = req.body;
+
+      if (avatar && chef.avatar && avatar !== chef.avatar) {
+        await deleteFile("general", chef.avatar);
+      }
+
       const updatedChef = await Chef.findByIdAndUpdate(
         chefId,
-        { name, bio },
+        {
+          name: name || chef.name,
+          bio: bio || chef.bio,
+          avatar: avatar || chef.avatar,
+        },
         { new: true, runValidators: true },
       );
-      res
-        .status(200)
-        .json({ message: "Profile updated successfully", data: updatedChef });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  },
 
-  updateAvatar: async (req, res) => {
-    try {
-      if (!req.file) {
-        return res.status(400).json({ message: "No file uploaded" });
-      }
-      const chef = req.user;
-      if (chef.avatar) {
-        deleteImage(chef.avatar);
-      }
-      chef.avatar = `avatars/${req.file.filename}`;
-      await chef.save();
-      res
-        .status(200)
-        .json({ message: "Avatar uploaded successfully", data: chef });
+      res.status(200).json({
+        message: "Profile updated successfully",
+        data: updatedChef,
+      });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -95,32 +88,29 @@ const profileController = {
       const chef = req.user;
 
       if (chef.avatar) {
-        deleteImage(chef.avatar);
+        await deleteFile("general", chef.avatar);
       }
 
       const recipes = await Recipe.find({ author: chefId });
-      recipes.forEach((recipe) => {
-        if (recipe.image) {
-          deleteImage(recipe.image);
-        }
+      const recipeDeletePromises = recipes.map((recipe) => {
+        if (recipe.image) return deleteFile("general", recipe.image);
       });
+      await Promise.all(recipeDeletePromises);
       await Recipe.deleteMany({ author: chefId });
 
       const blogs = await Blog.find({ author: chefId });
-      blogs.forEach((blog) => {
-        if (blog.image) {
-          deleteImage(blog.featuredImage);
-        }
+      const blogDeletePromises = blogs.map((blog) => {
+        if (blog.featuredImage)
+          return deleteFile("general", blog.featuredImage);
       });
+      await Promise.all(blogDeletePromises);
       await Blog.deleteMany({ author: chefId });
 
       await Chef.findByIdAndDelete(chefId);
 
-      res
-        .status(200)
-        .json({
-          message: "Account and all associated media deleted successfully",
-        });
+      res.status(200).json({
+        message: "Account and all associated media deleted successfully",
+      });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }

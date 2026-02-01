@@ -40,7 +40,7 @@ const blogSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Generate slug from title
