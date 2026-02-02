@@ -149,12 +149,13 @@ const blogsController = {
 
   createBlog: async (req, res) => {
     try {
-      const { title, content, excerpt, category } = req.body;
+      const { title, content, excerpt, category, featuredImage } = req.body;
       const blog = await Blog.create({
         title,
         content,
         excerpt,
         category,
+        featuredImage,
         author: req.user._id,
       });
 

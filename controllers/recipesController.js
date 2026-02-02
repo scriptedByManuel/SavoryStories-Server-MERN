@@ -156,6 +156,7 @@ const recipesController = {
         cookingTime,
         difficulty,
         category,
+        image
       } = req.body;
       const recipe = await Recipe.create({
         title,
@@ -165,6 +166,7 @@ const recipesController = {
         cookingTime,
         difficulty,
         category,
+        image,
         author: req.user._id,
       });
 
